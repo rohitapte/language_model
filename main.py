@@ -44,7 +44,7 @@ tokenizer.fit_on_texts(train_data)
 
 training_generator=DataGenerator(train_data,tokenizer,timesteps=TIMESTEPS,batch_size=BATCH_SIZE,shuffle=True)
 validation_generator=DataGenerator(test_data,tokenizer,timesteps=TIMESTEPS,batch_size=BATCH_SIZE,shuffle=False)
-inputs=Input(batch_shape=(BATCH_SIZE,TIMESTEPS-1,),name='inputs')
+inputs=Input(shape=(TIMESTEPS-1,),name='inputs')
 #embedding_layer=Embedding(input_dim=len(tokenizer.word_index),output_dim=EMBEDDING_DIM,input_length=TIMESTEPS,weights=[emb_matrix],trainable=False,name='embedding_layer')
 embedding_layer = Embedding(input_dim=len(tokenizer.word_index), output_dim=EMBEDDING_DIM)
 input_embedded=embedding_layer(inputs)
@@ -56,7 +56,7 @@ encoder_out2, encoder_state2 = encoder_gru2(encoder_out1)
 
 
 # dense layer
-dense = Dense(len(tokenizer.word_index), activation='softmax', name='softmax_layer')
+dense = Dense(len(tokenizer.word_index)+1, activation='softmax', name='softmax_layer')
 dense_time = TimeDistributed(dense, name='time_distributed_layer')
 output_pred = dense_time(encoder_out2)
 

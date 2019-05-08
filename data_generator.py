@@ -25,5 +25,5 @@ class DataGenerator(Sequence):
         text=self.text[idx * self.batch_size:(idx + 1) * self.batch_size]
         text_encoded = self.tokenizer.texts_to_sequences(text)
         preproc_text = pad_sequences(text_encoded, padding='post', maxlen=self.timesteps)
-        target_categorical=to_categorical(preproc_text,num_classes=len(self.tokenizer.word_index))
+        target_categorical=to_categorical(preproc_text,num_classes=len(self.tokenizer.word_index)+1)
         return preproc_text[:,:-1],target_categorical[:,1:,:]
