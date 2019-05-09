@@ -2,7 +2,7 @@ from keras.preprocessing.text import Tokenizer
 from data_generator import DataGenerator
 from tensorflow.python.keras.layers import Input,Embedding,GRU,Dense,TimeDistributed
 from tensorflow.python.keras.models import Model
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint
 import json
 import os
 import io
