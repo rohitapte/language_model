@@ -2,6 +2,7 @@ from keras.preprocessing.text import Tokenizer
 from data_generator import DataGenerator
 from tensorflow.python.keras.layers import Input,Embedding,GRU,Dense,TimeDistributed
 from tensorflow.python.keras.models import Model
+from keras.callbacks import ModelCheckpoint
 import json
 import os
 import io
@@ -63,7 +64,8 @@ output_pred = dense_time(encoder_out2)
 full_model = Model(inputs=inputs, outputs=output_pred)
 full_model.compile(optimizer='adam', loss='categorical_crossentropy')
 full_model.summary(line_length=225)
-full_model.fit_generator(generator=training_generator,validation_data=validation_generator,use_multiprocessing=True,workers=6,epochs=NUM_EPOCHS)
+model_saver=ModelCheckpoint('h5.models/full_model.h5', monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)
+full_model.fit_generator(generator=training_generator,validation_data=validation_generator,use_multiprocessing=True,workers=6,epochs=NUM_EPOCHS,callbacks=[model_saver])
 tokenizer_json=tokenizer.to_json()
 with io.open('h5.models/tokenizer.json','w',encoding='utf-8') as f:
     f.write(json.dumps(tokenizer_json,ensure_ascii=False))
